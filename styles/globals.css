@@ -24,3 +24,19 @@ a {
     background: black;
   }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .container {
+    @apply w-[95%] lg:max-w-[1280px] m-auto;
+  }
+  .btn-primary {
+    @apply py-2 px-6 rounded-sm text-white bg-blue uppercase font-bold min-w-[125px];
+  }
+  .rise {
+    @apply transition ease-in-out delay-150 hover:-translate-y-[2px] duration-300;
+  }
+}
