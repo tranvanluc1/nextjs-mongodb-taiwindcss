@@ -1,16 +1,25 @@
 import Image from "next/image";
-import * as React from "react";
 import useOnClickOutSide from "../../hooks/useOnClickOutSide";
 import UserIcon from "../../utils/icons/user.svg";
 import MenuIcon from "../../utils/icons/menu.svg";
+import { deleteCookie } from "cookies-next";
+import { useContext, useRef, useState } from "react";
+import { Context } from "../../context";
 
 export default function Header({ openSidebar, handleSidebar }) {
-  const [isShowMenuRight, setShowMenuRight] = React.useState(false);
-  const menuRef = React.useRef();
+  const { state, dispatch } = useContext(Context);
+  const [isShowMenuRight, setShowMenuRight] = useState(false);
+  const menuRef = useRef();
 
   useOnClickOutSide(menuRef, () => {
     setShowMenuRight(false);
   });
+
+  const logout = () => {
+    deleteCookie("refreshtoken", { path: "/api/user/refresh_token" });
+    deleteCookie("access_token", { path: "/" });
+  };
+
   return (
     <div
       className={`fixed z-10 top-0 left-0 w-full py-2 px-1 bg-primary-color md:px-3 lg:px-4 transition-all duration-500 `}
@@ -23,11 +32,11 @@ export default function Header({ openSidebar, handleSidebar }) {
           >
             <Image src={MenuIcon} alt="" className="w-[20px]" />
           </div>
-          <h5 className="text-[24px] text-white">My App</h5>
+          <h5 className="text-[24px] text-white">MuaBan24h</h5>
         </div>
         <div className="flex">
           <button className="hidden btn-primary mr-1 md:block bg-[#82B54B] rise">
-            Số dư: 8đ
+            Số dư: 0 đ
           </button>
           <button className="btn-primary mr-1 rise">Nạp tiền</button>
           <button
@@ -45,7 +54,9 @@ export default function Header({ openSidebar, handleSidebar }) {
                 <li className="py-2 hover:bg-[#eaeaea]">Tài khoản</li>
                 <li className="py-2 hover:bg-[#eaeaea]">Danh sách của tôi</li>
                 <li className="py-2 hover:bg-[#eaeaea]">Lịch sử</li>
-                <li className="py-2 hover:bg-[#eaeaea]">Đăng xuất</li>
+                <li className="py-2 hover:bg-[#eaeaea]" onClick={logout}>
+                  Đăng xuất
+                </li>
               </ul>
             </div>
           </button>

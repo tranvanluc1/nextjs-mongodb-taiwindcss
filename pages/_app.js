@@ -1,16 +1,22 @@
-import "../styles/globals.css";
-import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "../theme";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { Provider } from "../context";
+import "../styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }) {
   const [openSidebar, setOpenSidebar] = useState(false);
 
+  const [dataUser, setUser] = useState({});
+  useEffect(() => {}, []);
+
   return (
-    <>
+    <Provider>
+      <ToastContainer />
       <Header
+        user={dataUser}
         openSidebar={openSidebar}
         handleSidebar={() => setOpenSidebar((pre) => !pre)}
       />
@@ -23,9 +29,9 @@ function MyApp({ Component, pageProps }) {
           openSidebar && "md:ml-[240px] md:w-[calc(100%-240px)]"
         } `}
       >
-        <Component {...pageProps} />
+        <Component {...pageProps} user={dataUser} />
       </div>
-    </>
+    </Provider>
   );
 }
 
